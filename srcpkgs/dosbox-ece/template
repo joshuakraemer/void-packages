@@ -1,0 +1,18 @@
+# Template file for 'dosbox-ece'
+pkgname=dosbox-ece
+version=r4258
+revision=1
+create_wrksrc=yes
+build_style=gnu-configure
+hostmakedepends="p7zip automake pkg-config"
+makedepends="alsa-lib-devel libpng-devel SDL_net-devel SDL_sound-devel"
+short_desc="DOS x86 emulator, Enhanced Community Edition"
+maintainer="Joshua Krämer <joshua@kraemer.link>"
+license="GPL-2.0-or-later"
+homepage="https://dosboxece.yesterplay.net"
+distfiles="https://dosboxdl.yesterplay.net/DOSBox%20ECE%20${version}%20(Linux%20source).7z"
+checksum=247644a6ce53939652f213bf7f73ab79cd78880db3c045ccd2ac6c2b8647dd0a
+
+pre_configure() {
+	./autogen.sh
+}
