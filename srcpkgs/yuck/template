@@ -1,0 +1,21 @@
+# Template file for 'yuck'
+pkgname=yuck
+version=0.2.5
+revision=1
+build_style=gnu-configure
+hostmakedepends="automake"
+depends="m4"
+short_desc="Command-line argument parser for C"
+maintainer="Joshua Krämer <joshua@kraemer.link>"
+license="BSD-3-Clause"
+homepage="http://www.fresse.org/yuck/"
+distfiles="https://github.com/hroptatyr/yuck/archive/v${version}.tar.gz"
+checksum=b80cc54ce2b043f3d2468a24bfcc7c9b81937e307b82db5c4029b00e717490ae
+
+pre_configure() {
+	autoreconf -fi
+}
+
+post_install() {
+	vlicense ${FILESDIR}/license
+}
