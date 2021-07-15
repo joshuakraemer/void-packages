@@ -1,28 +1,26 @@
 # Template file for 'ImageMagick'
 pkgname=ImageMagick
-version=7.0.11.12
-revision=2
+version=7.1.0.2
+revision=1
 _majorver=${version%.*}
 _patchver=${version##*.}
 wrksrc="${pkgname}-${_majorver}-${_patchver}"
 build_style=gnu-configure
-configure_args="--without-autotrace --with-wmf=yes
- --without-dps --without-fpx --without-gvc --without-jbig --with-gslib=yes
- --without-lqr --without-openexr --with-gs-font-dir=/usr/share/fonts/Type1
- --with-magick-plus-plus --with-modules --enable-shared --with-rsvg
- --with-dejavu-font-dir=/usr/share/fonts/TTF --enable-opencl --disable-static
- --with-openjp2"
+configure_args="--disable-static --enable-opencl --with-modules --with-gslib
+ --with-rsvg --with-wmf --with-dejavu-font-dir=/usr/share/fonts/TTF
+ --with-gs-font-dir=/usr/share/fonts/Type1"
 hostmakedepends="automake libtool pkg-config autoconf"
-makedepends="djvulibre-devel fftw-devel ghostscript-devel glib-devel lcms2-devel
- libXt-devel libgomp-devel libltdl-devel librsvg-devel libwebp-devel libwmf-devel
- ocl-icd-devel pango-devel libopenjpeg2-devel"
+makedepends="djvulibre-devel fftw-devel ghostscript-devel glib-devel
+ graphviz-devel lcms2-devel libXt-devel libgomp-devel liblqr-devel libltdl-devel
+ libopenjpeg2-devel libraqm-devel librsvg-devel libwebp-devel libwmf-devel
+ ocl-icd-devel pango-devel"
 short_desc="Package for display and interactive manipulation of images"
 maintainer="Johannes <johannes.brechtmann@gmail.com>"
 license="ImageMagick"
-homepage="https://www.imagemagick.org/"
+homepage="https://www.imagemagick.org"
 changelog="https://imagemagick.org/script/changelog.php"
-distfiles="https://github.com/ImageMagick/ImageMagick/archive/${_majorver}-${_patchver}.tar.gz"
-checksum=b4054e9f6b6692791f37fe6f2ab5819152210e6628e69a8dbd66a41320c3c9d3
+distfiles="https://download.imagemagick.org/ImageMagick/download/ImageMagick-${_majorver}-${_patchver}.tar.xz"
+checksum=039006f616bb326598e7b910932694e2a3ca925586560e1b8d153a7048f52980
 
 subpackages="libmagick libmagick-devel"
 
