@@ -1,0 +1,18 @@
+# Template file for 'woff'
+pkgname=woff
+version=20091003
+revision=1
+create_wrksrc=yes
+build_style=gnu-makefile
+makedepends="zlib-devel"
+short_desc="Web Open Font Format reference implementaton"
+maintainer="<joshua@kraemer.link>"
+license="MPL-1.1, GPL-2.0-or-later, LGPL-2.1-or-later"
+homepage="https://people.mozilla.org/~jkew/woff/"
+distfiles="http://pkgs.fedoraproject.org/repo/pkgs/woff/woff-code-latest.zip/1dcdbc9a7f48086185740c185d822279/woff-code-latest.zip"
+checksum=7713630d2f43320a1d92e2dbb014ca3201caab1dd4c0ab92816016824c680d96
+
+do_install() {
+	vbin sfnt2woff
+	vbin woff2sfnt
+}
