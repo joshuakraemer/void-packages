@@ -1,0 +1,55 @@
+# Template file for 'XKCP'
+pkgname=XKCP
+version=0
+_hash=6a5815f7d606135abef8899a4d3861123fc184c9
+revision=1
+wrksrc=XKCP-${_hash}
+build_style=gnu-makefile
+hostmakedepends="libxslt"
+short_desc="The eXtended Keccak Code Package"
+maintainer="Joshua Krämer <joshua@kraemer.link>"
+license="CC0-1.0, BSD-3-Clause, Apache-2.0, custom:Cryptogams license, GPL-3.0-or-later"
+homepage="https://keccak.team"
+distfiles="https://github.com/XKCP/XKCP/archive/${_hash}.tar.gz"
+checksum=98fb2a1ac56f81bd5c1cc753323b9d64273fa41fb178b2d84d9fb23c76eb9c68
+
+case "$XBPS_TARGET_MACHINE" in
+	aarch64*) _target="ARMv8A";;
+	armv7*) _target="ARMv7A";;
+	armv6*) _target="ARMv6";;
+	*)
+		case "$XBPS_WORDSIZE" in
+			64) _target="generic64lc";;
+			32) _target="generic32lc";;
+			*) echo "Target architecture not supported";;
+		esac
+		;;
+esac
+_target=SSSE3
+
+do_build() {
+	make ${_target}/libXKCP.so
+	make ${_target}/KeccakSum
+}
+
+do_install() {
+	vcopy "bin/${_target}/libXKCP.so" usr/lib
+	vlicense LICENSE
+}
+
+XKCP-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmkdir usr/include/XKCP
+		vcopy "bin/${_target}/libXKCP.so.headers/*" usr/include/XKCP
+	}
+}
+
+KeccakSum_package() {
+	short_desc="Computes Keccak hashes"
+	pkg_install() {
+		vbin "bin/${_target}/KeccakSum"
+		vlicense LICENSE
+	}
+}
