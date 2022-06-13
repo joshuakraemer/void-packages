@@ -1,27 +1,33 @@
 # Template file for 'google-chrome'
 pkgname=google-chrome
-version=126.0.6478.126
+version=97.0.4692.99
 revision=1
 _channel=stable
 archs="x86_64"
-hostmakedepends="python3-html2text python3-setuptools"
-depends="gtk+3"
+hostmakedepends="curl tar xz python3 python3-html2text python3-setuptools"
 short_desc="Attempt at creating a safer, faster, and more stable browser"
 maintainer="Michael Aldridge <maldridge@voidlinux.org>"
 license="custom:chrome"
 homepage="https://www.google.com/chrome/"
-distfiles="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-${_channel}_${version}-1_amd64.deb"
-checksum=3ec1cadbb55cf66cc51f0421eace324a88836ee2d982b945b8f67a3f131b0924
-
-skiprdeps="/opt/google/chrome/libqt5_shim.so /opt/google/chrome/libqt6_shim.so"
-repository=nonfree
-restricted=yes
 nostrip=yes
+restricted=yes
+repository=nonfree
+
+_baseUrl="https://mirror.cs.uchicago.edu/google-chrome/pool/main/g/google-chrome-stable"
+_filename="google-chrome-${_channel}_${version}-1_amd64.deb"
+_chromeUrl="${_baseUrl}/${_filename}"
+_licenseUrl="https://www.google.com/intl/en/chrome/terms/"
+
+distfiles="$_chromeUrl"
+checksum=48334071fa2462698301231e9d63b647f558eecc6e60a6d9cfc71805a1564ea1
+
+do_extract() {
+	mkdir -p ${DESTDIR}
+	ar x ${XBPS_SRCDISTDIR}/google-chrome-${version}/${_filename}
+}
 
 do_install() {
-	vcopy etc /
-	vcopy opt /
-	vcopy usr /
+	tar xf data.tar.xz -C ${DESTDIR}
 
 	# Install the icons
 	for size in 16 24 32 48 64 128 256; do
@@ -39,6 +45,9 @@ do_install() {
 	# Remove the Debian/Ubuntu crontab
 	rm -rf ${DESTDIR}/etc
 	rm -rf ${DESTDIR}/opt/google/chrome/cron
+}
 
-	vlicense "${FILESDIR}"/google-chrome-eula.md
+post_install() {
+	curl ${_licenseUrl} | html2text >> google-chrome-eula.md
+	vlicense google-chrome-eula.md
 }
