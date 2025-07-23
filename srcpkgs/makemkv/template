@@ -1,0 +1,35 @@
+# Template file for 'makemkv'
+pkgname=makemkv
+version=1.18.1
+revision=1
+archs="i686 x86_64 armv7l armv8l aarch64"
+build_wrksrc="makemkv-oss-${version}"
+build_style=gnu-configure
+hostmakedepends="pkg-config"
+makedepends="expat-devel ffmpeg6-devel openssl-devel qt5-devel zlib-devel"
+short_desc="Tool to remux DVD and Blu-ray discs to MKV"
+maintainer="Joshua Krämer <joshua@kraemer.link>"
+license="custom:EULA"
+homepage="https://www.makemkv.com"
+distfiles="https://www.makemkv.com/download/makemkv-bin-${version}.tar.gz
+ https://www.makemkv.com/download/makemkv-oss-${version}.tar.gz"
+checksum="b16576651eadec3585e817843a2a1a0ebcaa713b89dd1e020d8b1d056ddb2fd6
+ dc47eefb1e68f7d539e4b079bb93ce64144104ad233de56818939810ecd03b7b"
+repository=nonfree
+
+case "$XBPS_TARGET_MACHINE" in
+	i686) _arch="i386";;
+	x86_64) _arch="amd64";;
+	armv7l|armv8l) _arch="armhf";;
+	aarch64) _arch="arm64";;
+esac
+
+post_install() {
+	vlicense "License.txt"
+	vlicense "${wrksrc}/makemkv-bin-${version}/src/eula_en_linux.txt"
+	vbin "${wrksrc}/makemkv-bin-${version}/bin/${_arch}/makemkvcon"
+	ln -s makemkvcon "${DESTDIR}/usr/bin/sdftool"
+	vinstall "${wrksrc}/makemkv-bin-${version}/src/share/appdata.tar" 644 "usr/share/MakeMKV"
+	vinstall "${wrksrc}/makemkv-bin-${version}/src/share/blues.jar" 644 "usr/share/MakeMKV"
+	vinstall "${wrksrc}/makemkv-bin-${version}/src/share/blues.policy" 644 "usr/share/MakeMKV"
+}
